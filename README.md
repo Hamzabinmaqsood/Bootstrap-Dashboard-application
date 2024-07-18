@@ -41,21 +41,18 @@ The Inventory Management System is a web-based application designed to streamlin
    ```
 
 ## Usage
-
 1. **Administrator Dashboard**: Access the admin panel to manage inventory, trips, and drivers.
 2. **Manager Dashboard**: Monitor trip schedules, handle complaints, and manage driver bonuses.
-3. **Driver Portal**: View assigned trips, submit reports, and check bonus status.
+3. **Driver Portal**: View assigned trips, submit reports and check bonus status.
+4. **Customer Panel** View stats, Submit complains, Customize profile and do settings.
 
 ## Contributing
-
 Contributions are welcome! Please fork the repository and submit a pull request with your changes.
 
 ## License
-
 This project is licensed under the [MIT License](link-to-license).
 
 ## Support
-
 For any issues or questions, please [open an issue](link-to-issues) on GitHub.
 
 ---
