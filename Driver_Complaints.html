@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Dashboard - Complaints</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-align: left;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .complaints-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .complaints-content h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .complaints-section,
+        .feedback-section {
+            margin-bottom: 30px;
+        }
+
+        .complaints-section h3,
+        .feedback-section h3 {
+            color: #007bff;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .complaints-section p,
+        .feedback-section p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-left: -250px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar.open {
+                margin-left: 0;
+            }
+        }
+
+        /* Toggle Button Styles */
+        .toggle-btn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2 class="text-center text-white">Driver Dashboard</h2>
+        <a href="Driver_index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="Driver_Trip_Management.html"><i class="fas fa-route"></i> Trip Management</a>
+        <a href="Driver_Complaints.html"><i class="fas fa-bell"></i> Complaints</a>
+        <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main-content">
+        <span class="toggle-btn" onclick="toggleSidebar()">&#9776;</span>
+        <div class="dashboard-header">
+            <h1>Driver Dashboard</h1>
+            <p>Manage your trips, repairs, and notifications with ease.</p>
+        </div>
+
+        <div class="complaints-content">
+            <h2>Complaints & Feedback</h2>
+
+            <div class="complaints-section">
+                <h3><i class="fas fa-exclamation-circle icon"></i>Submit Complaints</h3>
+                <p>If you encounter any issues with your truck or during your trips, please submit a complaint using the form below. Our team will address your concerns promptly.</p>
+                <form>
+                    <div class="form-group">
+                        <label for="complaintSubject">Subject</label>
+                        <input type="text" class="form-control" id="complaintSubject" placeholder="Enter complaint subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="complaintDescription">Description</label>
+                        <textarea class="form-control" id="complaintDescription" rows="4" placeholder="Describe the issue"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Complaint</button>
+                </form>
+            </div>
+
+            <div class="feedback-section">
+                <h3><i class="fas fa-comments icon"></i>Provide Feedback</h3>
+                <p>We value your feedback! Please share your experiences or suggestions to help us improve our services.</p>
+                <form>
+                    <div class="form-group">
+                        <label for="feedbackSubject">Subject</label>
+                        <input type="text" class="form-control" id="feedbackSubject" placeholder="Enter feedback subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="feedbackDescription">Description</label>
+                        <textarea class="form-control" id="feedbackDescription" rows="4" placeholder="Share your feedback"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('open');
+        }
+    </script>
+
+</body>
+
+</html>

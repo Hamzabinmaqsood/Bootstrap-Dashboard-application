@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Management - Manager Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: width 0.3s;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-align: left;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-box .info-box-content {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            width: 150px;
+            height: 120px;
+        }
+
+        .info-box .info-box-content i {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        .table-container table {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: #007bff;
+        }
+
+        .feature-box {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .feature-box .feature {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            width: 200px;
+        }
+
+        .feature-box .feature i {
+            font-size: 2.5em;
+            color: #007bff;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 9999;
+            color: #343a40;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                padding: 0;
+            }
+
+            .sidebar a {
+                font-size: 0;
+                padding: 0;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        .sidebar.active {
+            width: 250px;
+            padding-top: 20px;
+        }
+
+        .sidebar.active a {
+            font-size: 18px;
+            padding: 10px 15px;
+        }
+
+        .main-content.active {
+            margin-left: 250px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <span class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></span>
+
+    <div class="sidebar" id="sidebar">
+        <h2 class="text-center text-white">Manager Dashboard</h2>
+        <a href="Manager_index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="Manager_Trip_Management.html"><i class="fas fa-route"></i> Trip Management</a>
+        <a href="Manager_Gps_Tracking.html"><i class="fas fa-map-marker"></i> GPS Tracking</a>
+        <a href="Manager_Inventory_Management.html"><i class="fas fa-box"></i> Inventory Management</a>
+        <a href="Manager_Salery_Management.html"><i class="fas fa-money-bill-alt"></i> Salary Management</a>
+        <a href="Manager_Workshop_Management.html"><i class="fas fa-wrench"></i> Workshop Management</a>
+        <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="dashboard-header">
+            <h1>Workshop Management Dashboard</h1>
+            <p>Manage and track workshop activities and schedules efficiently.</p>
+        </div>
+
+        <div class="row info-box">
+            <div class="info-box-content col-md-2.5" style="background-color: #e0f7fa;">
+                <i class="fas fa-tools card-icon"></i>
+                <h4>25</h4>
+                <p>Ongoing Repairs</p>
+            </div>
+            <div class="info-box-content col-md-3" style="background-color: #ffecb3;">
+                <i class="fas fa-truck-moving card-icon"></i>
+                <h4>15</h4>
+                <p>Completed Repairs</p>
+            </div>
+            <div class="info-box-content col-md-3" style="background-color: #dcedc8;">
+                <i class="fas fa-calendar-check card-icon"></i>
+                <h4>10</h4>
+                <p>Scheduled Repairs</p>
+            </div>
+            <div class="info-box-content col-md-3" style="background-color: #ffccbc;">
+                <i class="fas fa-wrench card-icon"></i>
+                <h4>5</h4>
+                <p>Pending Repairs</p>
+            </div>
+        </div>
+
+        <div class="row chart-container">
+            <div class="col-md-6">
+                <canvas id="repairStatusChart" style="height: 250px;"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="repairTypeChart" style="height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="row table-container">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color: #007bff;">
+                            <th>Repair ID</th>
+                            <th>Truck ID</th>
+                            <th>Repair Type</th>
+                            <th>Status</th>
+                            <th>Scheduled Date</th>
+                            <th>Completion Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>REP001</td>
+                            <td>TRK001</td>
+                            <td>Engine Overhaul</td>
+                            <td>Ongoing</td>
+                            <td>2024-07-01</td>
+                            <td>2024-07-15</td>
+                        </tr>
+                        <tr>
+                            <td>REP002</td>
+                            <td>TRK002</td>
+                            <td>Transmission Repair</td>
+                            <td>Completed</td>
+                            <td>2024-06-20</td>
+                            <td>2024-07-05</td>
+                        </tr>
+                        <tr>
+                            <td>REP003</td>
+                            <td>TRK003</td>
+                            <td>Brake Replacement</td>
+                            <td>Scheduled</td>
+                            <td>2024-07-10</td>
+                            <td>2024-07-20</td>
+                        </tr>
+                        <tr>
+                            <td>REP004</td>
+                            <td>TRK004</td>
+                            <td>Oil Change</td>
+                            <td>Pending</td>
+                            <td>2024-07-15</td>
+                            <td>2024-07-15</td>
+                        </tr>
+                        <tr>
+                            <td>REP005</td>
+                            <td>TRK005</td>
+                            <td>Tire Replacement</td>
+                            <td>Completed</td>
+                            <td>2024-06-25</td>
+                            <td>2024-07-02</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row feature-box">
+            <div class="feature col-md-3" style="background-color: #e3f2fd;">
+                <i class="fas fa-chart-line"></i>
+                <h5>Performance Analytics</h5>
+                <p>View detailed performance analytics of workshop activities.</p>
+            </div>
+            <div class="feature col-md-2.5" style="background-color: #ffebee;">
+                <i class="fas fa-user-cog"></i>
+                <h5>Technician Management</h5>
+                <p>Manage technician details and records efficiently.</p>
+            </div>
+            <div class="feature col-md-2.5" style="background-color: #e8f5e9;">
+                <i class="fas fa-bell"></i>
+                <h5>Notifications</h5>
+                <p>Get notified about important updates and reminders.</p>
+            </div>
+            <div class="feature col-md-3" style="background-color: #fff3e0;">
+                <i class="fas fa-cogs"></i>
+                <h5>Settings</h5>
+                <p>Configure and customize your dashboard settings.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', function () {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('active');
+        });
+
+        var repairStatusCtx = document.getElementById('repairStatusChart').getContext('2d');
+        var repairStatusChart = new Chart(repairStatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Ongoing', 'Completed', 'Scheduled', 'Pending'],
+                datasets: [{
+                    label: 'Repair Status',
+                    data: [25, 15, 10, 5],
+                    backgroundColor: [
+                        'Orange',   // Light Blue
+                        'blue',   // Light Red
+                        'yellow',   // Light Green
+                        'brown',  // Light Purple
+                    ],
+                    borderColor: [
+                        'red',   // Light Orange
+                        'Teal',   // Light Yellow
+                        'purple',   // Light Teal
+                        'black'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var repairTypeCtx = document.getElementById('repairTypeChart').getContext('2d');
+        var repairTypeChart = new Chart(repairTypeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Engine Overhaul', 'Transmission Repair', 'Brake Replacement', 'Oil Change', 'Tire Replacement'],
+                datasets: [{
+                    label: 'Repair Types',
+                    data: [8, 12, 5, 9, 6],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderColor: [
+                        'rgba(0, 123, 255, 1)',
+                        'rgba(40, 167, 69, 1)',
+                        'rgba(255, 193, 7, 1)',
+                        'rgba(220, 53, 69, 1)',
+                        'rgba(102, 16, 242, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

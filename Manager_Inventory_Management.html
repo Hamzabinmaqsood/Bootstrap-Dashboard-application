@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management - Manager Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/5.5.2/css/ionicons.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            background-color: #2d3e4f;
+            padding-top: 20px;
+            transition: width 0.3s;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-align: left;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+        .sidebar a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .info-box .info-box-content {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            width: 200px;
+            height: 150px;
+        }
+        .info-box .info-box-content i {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .chart-container {
+            margin-top: 20px;
+            max-width: 100%; /* Ensure charts don't exceed their container */
+        }
+        .table-container {
+            margin-top: 20px;
+        }
+        .table-container table {
+            width: 100%;
+            margin: 0 auto;
+        }
+        .card-icon {
+            font-size: 2rem;
+            color: #007bff;
+        }
+        .toggle-button {
+            position: absolute;
+            top: 10px;
+            left: 260px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .toggle-button {
+                display: block;
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2 class="text-center text-white">Manager Dashboard</h2>
+        <a href="Manager_index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="Manager_Trip_Management.html"><i class="fas fa-route"></i> Trip Management</a>
+        <a href="Manager_Gps_Tracking.html"><i class="fas fa-map-marker"></i> GPS Tracking</a>
+        <a href="Manager_Inventory_Management.html"><i class="fas fa-box"></i> Inventory Management</a>
+        <a href="Manager_Salery_Management.html"><i class="fas fa-money-bill-alt"></i> Salary Management</a>
+        <a href="Manager_Workshop_Management.html"><i class="fas fa-wrench"></i> Workshop Management</a>
+        <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div> 
+
+    <div class="toggle-button" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i> <!-- Replace with other icons as needed -->
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1>Inventory Management Dashboard</h1>
+            <p>This slide covers the inventory management system wherein vendors, total categories and products, sales are calculated.</p>
+        </div>
+
+        <div class="row info-box">
+            <div class="info-box-content col-md-2.5" style="background-color: #e0f7fa;">
+                <i class="fas fa-users card-icon"></i>
+                <h3>66</h3>
+                <p>Total Vendors</p>
+            </div>
+            <div class="info-box-content col-md-3" style="background-color: #ffecb3;">
+                <i class="fas fa-th-large card-icon"></i>
+                <h3>47</h3>
+                <p>Total Categories</p>
+            </div>
+            <div class="info-box-content col-md-3" style="background-color: #dcedc8;">
+                <i class="fas fa-box card-icon"></i>
+                <h3>225</p>
+                <p>Total Products</p>
+            </div>
+            <div class="info-box-content col-md-2.5" style="background-color: #ffccbc;">
+                <i class="fas fa-shopping-cart card-icon"></i>
+                <h3>232</h3>
+                <p>Total Sales</p>
+            </div>
+        </div>
+
+        <div class="row chart-container">
+            <div class="col-md-6">
+                <canvas id="categoryWiseChart" style="height: 250px;"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="salesReportChart" style="height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="row chart-container">
+            <div class="col-md-6">
+                <canvas id="categoryWiseSalesChart" style="height: 250px;"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="productDetailsChart" style="height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="row table-container">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color: #007bff;">
+                            <th>Vendor</th>
+                            <th>Category</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Purchase Rate</th>
+                            <th>Sales Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Vendor 1</td>
+                            <td>7<sup>th</sup> ENG MED</td>
+                            <td>Product 1</td>
+                            <td>3</td>
+                            <td>44</td>
+                            <td>46</td>
+                        </tr>
+                        <tr>
+                            <td>Vendor 2</td>
+                            <td>1<sup>st</sup> ENG MED</td>
+                            <td>Product 2</td>
+                            <td>9</td>
+                            <td>44</td>
+                            <td>46</td>
+                        </tr>
+                        <tr>
+                            <td>Vendor 3</td>
+                            <td>1<sup>st</sup> ENG MED</td>
+                            <td>Product 3</td>
+                            <td>8</td>
+                            <td>44</td>
+                            <td>41</td>
+                        </tr>
+                        <tr>
+                            <td>Vendor 4</td>
+                            <td>7<sup>th</sup> ENG MED</td>
+                            <td>Product 4</td>
+                            <td>1</td>
+                            <td>29</td>
+                            <td>31</td>
+                        </tr>
+                        <tr>
+                            <td>Vendor 5</td>
+                            <td>2<sup>nd</sup> ENG MED</td>
+                            <td>Product 5</td>
+                            <td>3</td>
+                            <td>31</td>
+                            <td>33</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const toggleButton = document.querySelector('.toggle-button');
+
+            if (sidebar.style.width === '250px') {
+                sidebar.style.width = '0';
+                mainContent.style.marginLeft = '0';
+                toggleButton.innerHTML = '<i class="fas fa-bars"></i>'; // Replace with open icon
+            } else {
+                sidebar.style.width = '250px';
+                mainContent.style.marginLeft = '250px';
+                toggleButton.innerHTML = '<i class="fas fa-times"></i>'; // Replace with close icon
+            }
+        }
+
+        const categoryWiseData = {
+            labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+            datasets: [{
+                label: 'Number of Products',
+                data: [12, 19, 3, 5, 2],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const salesReportData = {
+            labels: ['January', 'February', 'March', 'April', 'May'],
+            datasets: [{
+                label: 'Sales',
+                data: [65, 59, 80, 81, 56],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        const categoryWiseSalesData = {
+            labels: ['Category 1', 'Category 2', 'Category 3', 'Category 4', 'Category 5'],
+            datasets: [{
+                label: 'Sales Amount',
+                data: [120, 190, 30, 50, 20],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const productDetailsData = {
+            labels: ['Product 1', 'Product 2', 'Product 3', 'Product 4', 'Product 5'],
+            datasets: [{
+                label: 'Stock Quantity',
+                data: [12, 19, 3, 5, 2],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        // Initialize charts
+        new Chart(document.getElementById('categoryWiseChart'), {
+            type: 'bar',
+            data: categoryWiseData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('salesReportChart'), {
+            type: 'line',
+            data: salesReportData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('categoryWiseSalesChart'), {
+            type: 'bar',
+            data: categoryWiseSalesData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('productDetailsChart'), {
+            type: 'bar',
+            data: productDetailsData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

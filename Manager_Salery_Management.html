@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Management - Manager Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            background-color: #343a40;
+            padding-top: 20px;
+            transition: margin-left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-align: left;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin-left 0.3s ease;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: #007bff;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        .info-box {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-box .info-box-content {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            width: 150px;
+            height: 120px;
+        }
+
+        .info-box .info-box-content i {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-left: -250px;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar.active {
+                margin-left: 0;
+            }
+
+            .main-content.active {
+                margin-left: 250px;
+            }
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 999;
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <h2 class="text-center text-white">Manager Dashboard</h2>
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="trip_management.html"><i class="fas fa-route"></i> Trip Management</a>
+        <a href="gps_tracking.html"><i class="fas fa-map-marker-alt"></i> GPS Tracking</a>
+        <a href="Manager_Inventory_Management.html"><i class="fas fa-box"></i> Inventory Management</a>
+        <a href="Manager_Salery_Management.html"><i class="fas fa-money-bill-alt"></i> Salary Management</a>
+        <a href="Manager_Workshop_Management.html"><i class="fas fa-wrench"></i> Workshop Management</a>
+        <a href="login.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main-content" id="mainContent">
+        <div class="dashboard-header">
+            <h1>Salary Management Dashboard</h1>
+            <p>Manage and track salary distribution for all employees efficiently.</p>
+        </div>
+
+        <div class="row info-box">
+            <div class="info-box-content col-md-2" style="background-color: #e0f7fa;">
+                <i class="fas fa-user-tie card-icon"></i>
+                <h3>50</h3>
+                <p>Total Employees</p>
+            </div>
+            <div class="info-box-content col-md-3" style="background-color: #ffecb3;">
+                <i class="fas fa-dollar-sign card-icon"></i>
+                <h4>$200K</h4>
+                <p>Total Salaries</p>
+            </div>
+            <div class="info-box-content col-md-3" style="background-color: #dcedc8;">
+                <i class="fas fa-money-check-alt card-icon"></i>
+                <h4>$180K</h4>
+                <p>Paid Salaries</p>
+            </div>
+            <div class="info-box-content col-md-2" style="background-color: #ffccbc;">
+                <i class="fas fa-money-bill-wave card-icon"></i>
+                <h4>$20K</h4>
+                <p>Remaining Salaries</p>
+            </div>
+        </div>
+
+        <div class="row chart-container">
+            <div class="col-md-6">
+                <canvas id="salaryDistributionChart" style="height: 250px;"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="monthlySalaryChart" style="height: 250px;"></canvas>
+            </div>
+        </div>
+
+        <div class="row table-container">
+            <div class="col-md-12">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr style="background-color: #007bff; color: white;">
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                            <th>Position</th>
+                            <th>Salary</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EMP001</td>
+                            <td>John Doe</td>
+                            <td>Manager</td>
+                            <td>$5,000</td>
+                            <td>Paid</td>
+                        </tr>
+                        <tr>
+                            <td>EMP002</td>
+                            <td>Jane Smith</td>
+                            <td>Developer</td>
+                            <td>$4,000</td>
+                            <td>Pending</td>
+                        </tr>
+                        <tr>
+                            <td>EMP003</td>
+                            <td>Sam Johnson</td>
+                            <td>Designer</td>
+                            <td>$3,500</td>
+                            <td>Paid</td>
+                        </tr>
+                        <tr>
+                            <td>EMP004</td>
+                            <td>Linda Brown</td>
+                            <td>Tester</td>
+                            <td>$3,000</td>
+                            <td>Pending</td>
+                        </tr>
+                        <tr>
+                            <td>EMP005</td>
+                            <td>Michael Davis</td>
+                            <td>Support</td>
+                            <td>$2,500</td>
+                            <td>Paid</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="row feature-container">
+            <div class="feature col-md-3" style="background-color: #e3f2fd;">
+                <i class="fas fa-chart-line"></i>
+                <h5>Performance Analytics</h5>
+                <p>View detailed performance analytics of your employees.</p>
+            </div>
+            <div class="feature col-md-3" style="background-color: #ffebee;">
+                <i class="fas fa-user-cog"></i>
+                <h5>Employee Management</h5>
+                <p>Manage employee details and records efficiently.</p>
+            </div>
+            <div class="feature col-md-3" style="background-color: #e8f5e9;">
+                <i class="fas fa-bell"></i>
+                <h5>Notifications</h5>
+                <p>Get notified about important updates and reminders.</p>
+            </div>
+            <div class="feature col-md-3" style="background-color: #fff3e0;">
+                <i class="fas fa-cogs"></i>
+                <h5>Settings</h5>
+                <p>Configure and customize your dashboard settings.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var salaryDistributionCtx = document.getElementById('salaryDistributionChart').getContext('2d');
+        var salaryDistributionChart = new Chart(salaryDistributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Manager', 'Developer', 'Designer', 'Tester', 'Support'],
+                datasets: [{
+                    label: 'Salary Distribution',
+                    data: [20, 40, 20, 10, 10],
+                    backgroundColor: [
+                        'orange',   // Light Blue
+                        'blue',   // Light Red
+                        'yellow',   // Light Green
+                        'brown', // Light Yellow
+                        'black'  // Light Gray
+                    ],
+                    borderColor: [
+                        'white',
+                        'white',
+                        'white',
+                        'white',
+                        'white'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        var monthlySalaryCtx = document.getElementById('monthlySalaryChart').getContext('2d');
+        var monthlySalaryChart = new Chart(monthlySalaryCtx, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                datasets: [{
+                    label: 'Monthly Salary',
+                    data: [30000, 25000, 28000, 35000, 40000, 45000, 42000],
+                    backgroundColor: 'rgb(54, 162, 235)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('mainContent').classList.toggle('active');
+        }
+    </script>
+</body>
+
+</html>
